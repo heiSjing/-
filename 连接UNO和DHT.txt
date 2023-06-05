@@ -1,0 +1,25 @@
+#include "DHT.h"
+
+#define DHTPIN 2    // DHT11传感器连接到Arduino的数字引脚2
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+int ledPin = 13;  // 将LED连接到Arduino的数字引脚13
+
+void setup() {
+  Serial.begin(9600);
+  dht.begin();
+
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  delay(2000);
+
+  float temperature = dht.readTemperature();
+
+  // 计算灯的闪烁速度，与温度成反比
+  int blinkSpeed = map(temperature, 0, 40, 1000, 100);
+
+  digitalWrite(ledPin, HIGH);
